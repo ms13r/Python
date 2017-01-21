@@ -7,17 +7,17 @@ import sys
 
 def pull_data(url):
 	unsorted_list = []
-	for i in xrange(1000):
+	for i in xrange(1000):	# Get the first 1000 pages of comments
 		page = requests.get(url + str(i) + "/hit.json?scrolling")
-		if page.text == "" or page.status_code != 200:
+		if page.text == "" or page.status_code != 200:	# If there are no comments or the page does not exist
 			break
 		json_page = json.loads(page.text)
-		for item in json_page["data"]["captions"]["data"]:
+		for item in json_page["data"]["captions"]["data"]:	# Get the data from the JSON object
 			unsorted_list.append([item["hash"], item["points"], item["title"], item["datetime"]])
 
 	if not unsorted_list:
 		return unsorted_list
-	unsorted_list.sort(key = lambda x: int(x[1]), reverse = True)
+	unsorted_list.sort(key = lambda x: int(x[1]), reverse = True)   # Sort the user list
 	return unsorted_list
 
 def print_items(list, num):
